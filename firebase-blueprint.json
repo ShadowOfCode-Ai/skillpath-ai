@@ -1,0 +1,162 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with academic details, target role, and preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 200 },
+        "education": { "type": "string", "maxLength": 150 },
+        "degree": { "type": "string", "maxLength": 100 },
+        "branch": { "type": "string", "maxLength": 100 },
+        "graduationYear": { "type": "string", "maxLength": 10 },
+        "targetRoleId": { "type": "string", "maxLength": 50 },
+        "selfRatedLevel": { "type": "string", "enum": ["Beginner", "Intermediate", "Advanced"] },
+        "preferredLocations": { "type": "array" },
+        "lookingFor": { "type": "string", "enum": ["Internship", "Fresher Job", "Both"] },
+        "github": { "type": "string", "maxLength": 200 },
+        "linkedin": { "type": "string", "maxLength": 200 },
+        "portfolio": { "type": "string", "maxLength": 200 },
+        "consentTimestamp": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "name", "email", "targetRoleId", "lookingFor"]
+    },
+    "UserResume": {
+      "title": "UserResume",
+      "description": "Extracted text and detected skills from candidate resume",
+      "type": "object",
+      "properties": {
+        "fileName": { "type": "string", "maxLength": 200 },
+        "fileType": { "type": "string", "maxLength": 50 },
+        "sizeBytes": { "type": "number" },
+        "extractedText": { "type": "string", "maxLength": 60000 },
+        "wordCount": { "type": "number" },
+        "sectionsFound": { "type": "array" },
+        "contactSignals": { "type": "object" },
+        "detectedSkills": { "type": "array" },
+        "uploadedAt": { "type": "string" }
+      },
+      "required": ["extractedText", "detectedSkills", "uploadedAt"]
+    },
+    "AssessmentAttempt": {
+      "title": "AssessmentAttempt",
+      "description": "Assessment attempt with answers and graded per-skill breakdown",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["in_progress", "submitted"] },
+        "skillIds": { "type": "array" },
+        "questionIds": { "type": "array" },
+        "answers": { "type": "array" },
+        "perSkill": { "type": "object" },
+        "overallPercent": { "type": "number" },
+        "startedAt": { "type": "string" },
+        "submittedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "status", "skillIds", "startedAt"]
+    },
+    "RoadmapProgress": {
+      "title": "RoadmapProgress",
+      "description": "Saved milestone progress statuses for a career role roadmap",
+      "type": "object",
+      "properties": {
+        "roleId": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "steps": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["roleId", "userId", "steps"]
+    },
+    "SavedOpportunity": {
+      "title": "SavedOpportunity",
+      "description": "Bookmarked opportunity record",
+      "type": "object",
+      "properties": {
+        "opportunityId": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "savedAt": { "type": "string" }
+      },
+      "required": ["opportunityId", "userId", "savedAt"]
+    },
+    "Opportunity": {
+      "title": "Opportunity",
+      "description": "Internship or fresher job listing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 120 },
+        "company": { "type": "string", "maxLength": 120 },
+        "location": { "type": "string", "maxLength": 100 },
+        "workMode": { "type": "string", "enum": ["Onsite", "Hybrid", "Remote"] },
+        "type": { "type": "string", "enum": ["Internship", "Fresher Job"] },
+        "requiredSkills": { "type": "array" },
+        "description": { "type": "string", "maxLength": 5000 },
+        "applyUrl": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["active", "archived"] },
+        "isSample": { "type": "boolean" },
+        "postedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "company", "location", "workMode", "type", "requiredSkills", "status", "isSample"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Global application configuration toggles",
+      "type": "object",
+      "properties": {
+        "showSampleListings": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["showSampleListings"]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Marker document for admin privileges",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 200 },
+        "grantedAt": { "type": "string" }
+      },
+      "required": ["uid"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "UserProfile" },
+      "description": "User profile document owned by the authenticated user"
+    },
+    "/users/{userId}/resume/current": {
+      "schema": { "$ref": "UserResume" },
+      "description": "Current resume text and extracted skills, written by server API and readable by owner"
+    },
+    "/users/{userId}/assessments/{assessmentId}": {
+      "schema": { "$ref": "AssessmentAttempt" },
+      "description": "Assessment attempt and results, created and graded by server API and readable by owner"
+    },
+    "/users/{userId}/roadmap/{roleId}": {
+      "schema": { "$ref": "RoadmapProgress" },
+      "description": "Roadmap step progress markers saved by the user"
+    },
+    "/users/{userId}/saved/{opportunityId}": {
+      "schema": { "$ref": "SavedOpportunity" },
+      "description": "Bookmarked opportunities saved by the user"
+    },
+    "/opportunities/{opportunityId}": {
+      "schema": { "$ref": "Opportunity" },
+      "description": "Public listings readable by signed-in users, writable only by admins"
+    },
+    "/settings/app": {
+      "schema": { "$ref": "AppSettings" },
+      "description": "Global application configuration"
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "AdminRecord" },
+      "description": "Admin authorization marker documents"
+    }
+  }
+}

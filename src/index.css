@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Manrope', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Light Theme Tokens */
+    --color-bg: #F4F7FB;
+    --color-surface: #FFFFFF;
+    --color-raised: #F8FAFC;
+    --color-border: #E2E8F0;
+    --color-text: #0F172A;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748B;
+
+    --color-brand: #2563EB;
+    --color-brand-hover: #1D4ED8;
+    --color-brand-accent: #2563EB;
+    --color-chart-accent: #0284C7;
+
+    --color-status-verified: #15803D;
+    --color-status-verified-bg: rgba(21, 128, 61, 0.12);
+    --color-status-developing: #B45309;
+    --color-status-developing-bg: rgba(180, 83, 9, 0.12);
+    --color-status-unverified: #475569;
+    --color-status-unverified-bg: rgba(71, 85, 105, 0.12);
+    --color-status-missing: #B91C1C;
+    --color-status-missing-bg: rgba(185, 28, 28, 0.12);
+
+    --card-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.06);
+    --card-border: 1px solid var(--color-border);
+  }
+
+  .dark {
+    /* Dark Theme Tokens (Default) */
+    --color-bg: #0A0F1E;
+    --color-surface: #111A2E;
+    --color-raised: #16223A;
+    --color-border: rgba(148, 163, 184, 0.16);
+    --color-text: #E6EDF7;
+    --color-text-secondary: #9FB0C9;
+    --color-text-muted: #7487A6;
+
+    --color-brand: #2563EB;
+    --color-brand-hover: #1D4ED8;
+    --color-brand-accent: #60A5FA;
+    --color-chart-accent: #22D3EE;
+
+    --color-status-verified: #34D399;
+    --color-status-verified-bg: rgba(52, 211, 153, 0.12);
+    --color-status-developing: #FBBF24;
+    --color-status-developing-bg: rgba(251, 191, 36, 0.12);
+    --color-status-unverified: #94A3B8;
+    --color-status-unverified-bg: rgba(148, 163, 184, 0.12);
+    --color-status-missing: #F87171;
+    --color-status-missing-bg: rgba(248, 113, 113, 0.12);
+
+    --card-shadow: 0 0 0 1px var(--color-border), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    --card-border: 1px solid var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    transition: background-color 150ms ease-out, color 150ms ease-out;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Custom token helper utility classes */
+.bg-app { background-color: var(--color-bg); }
+.bg-surface { background-color: var(--color-surface); }
+.bg-raised { background-color: var(--color-raised); }
+.border-app { border-color: var(--color-border); }
+.text-main { color: var(--color-text); }
+.text-sub { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.text-brand { color: var(--color-brand); }
+.text-brand-accent { color: var(--color-brand-accent); }
+.bg-brand { background-color: var(--color-brand); }
+.bg-brand:hover { background-color: var(--color-brand-hover); }
+
+.card-elevated {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.chip-verified {
+  color: var(--color-status-verified);
+  background-color: var(--color-status-verified-bg);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.chip-developing {
+  color: var(--color-status-developing);
+  background-color: var(--color-status-developing-bg);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.chip-unverified {
+  color: var(--color-status-unverified);
+  background-color: var(--color-status-unverified-bg);
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+}
+
+.chip-missing {
+  color: var(--color-status-missing);
+  background-color: var(--color-status-missing-bg);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+/* Print Stylesheet for A4 Printable Report */
+@media print {
+  body {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+  .card-elevated {
+    border: 1px solid #CBD5E1 !important;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+  }
+}
